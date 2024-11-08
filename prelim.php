@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Student Enrollment Form</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <title>Student Enrollment Form</title>
+  <style>
+    .status-passed { color: green; font-weight: bold; }
+    .status-failed { color: red; font-weight: bold; }
+  </style>
 </head>
 <body>
-    
-<div class="container d-flex flex-column align-items-center">
+
+  <div class="container d-flex flex-column align-items-center">
     <h2 class="text-center my-4">Student Enrollment And Grade Processing System</h2>
 
     <form id="enrollmentForm" action="#" method="post" onsubmit="showGradeForm(event)" class="w-100 w-md-75 w-lg-50">
@@ -48,9 +52,9 @@
       </div>
       <button type="submit" class="btn btn-primary w-10">Submit Student Information</button>
     </form>
-</div>
 
-<div class="grade-form w-100 w-md-75 w-lg-50" id="gradeForm" style="display: none;">
+
+    <div class="grade-form w-100 w-md-75 w-lg-50" id="gradeForm" style="display: none;">
       <h5>Enter Grades for: <span id="studentName"></span></h5>
 
       <form id="gradesForm" action="#" method="post" onsubmit="submitGrades(event)">
@@ -69,6 +73,7 @@
         <button type="submit" class="btn btn-primary w-10">Submit Grades</button>
       </form>
     </div>
+
 
     <div id="studentDetails" class="student-details w-100 w-md-75 w-lg-50 mt-4" style="display: none;">
     <form id="enrollmentForm" action="#" method="post" onsubmit="showGradeForm(event)" class="w-100 w-md-75 w-lg-50">
@@ -108,7 +113,7 @@
       </div>
       <button type="submit" class="btn btn-primary w-10">Submit Student Information</button>
     </form>
-
+    
     <h3>Student Details</h3>
       <p><b>First Name:</b> <span id="displayFirstName"></span></p>
       <p><b>Last Name:</b> <span id="displayLastName"></span></p>
@@ -126,7 +131,7 @@
   </div>
 
   <script>
-   
+
     function showGradeForm(event) {
       event.preventDefault();
 
@@ -145,7 +150,32 @@
       document.getElementById('gradeForm').style.display = 'block';
     }
 
+    function submitGrades(event) {
+      event.preventDefault();
+
+      const prelim = parseFloat(document.getElementById('prelim').value);
+      const midterm = parseFloat(document.getElementById('midterm').value);
+      const finals = parseFloat(document.getElementById('finals').value);
+      const average = ((prelim + midterm + finals) / 3).toFixed(2);
+
+      let status = average >= 75 ? 'Passed' : 'Failed';
+      let statusClass = average >= 75 ? 'status-passed' : 'status-failed';
+
+      document.getElementById('displayFirstName').textContent = window.studentDetails.firstName;
+      document.getElementById('displayLastName').textContent = window.studentDetails.lastName;
+      document.getElementById('displayAge').textContent = window.studentDetails.age;
+      document.getElementById('displayGender').textContent = window.studentDetails.gender;
+      document.getElementById('displayCourse').textContent = window.studentDetails.course;
+      document.getElementById('displayEmail').textContent = window.studentDetails.email;
+      document.getElementById('displayPrelim').textContent = prelim;
+      document.getElementById('displayMidterm').textContent = midterm;
+      document.getElementById('displayFinals').textContent = finals;
+      document.getElementById('displayAverage').textContent = `${average} (${status})`;
+      document.getElementById('displayAverage').classList.add(statusClass);
+
+      document.getElementById('gradeForm').style.display = 'none';
+      document.getElementById('studentDetails').style.display = 'block';
+    }
+  </script>
 </body>
-
-
 </html>
